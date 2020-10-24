@@ -9,9 +9,6 @@ import { AtribuirDesafioPartidaDto } from './dtos/atribuir-desafio-partida.dto';
 import { DesafioStatus } from './interfaces/desafio-status.enum';
 import { CategoriasService } from 'src/categorias/categorias.service';
 
-/*
-Desafio
-*/
 
 @Injectable()
 export class DesafiosService {
@@ -26,25 +23,21 @@ export class DesafiosService {
 
     async criarDesafio(criarDesafioDto: CriarDesafioDto): Promise<Desafio> {
 
-        /*
-        Verificar se os jogadores informados estão cadastrados
-        */
-
+       
+        // Verificar se os jogadores informados estão cadastrados    
         const jogadores = await this.jogadoresService.consultarTodosJogadores()
 
         criarDesafioDto.jogadores.map(jogadorDto => {
+            // verificar se estão na BD 
             const jogadorFilter = jogadores.filter( jogador => jogador._id == jogadorDto._id )
 
             if (jogadorFilter.length == 0) {
                 throw new BadRequestException(`O id ${jogadorDto._id} não é um jogador!`)
             }
         
-        })
-          
-        /*
-        Verificar se o solicitante é um dos jogadores da partida
-        */    
-
+        })          
+        
+        // Verificar se o solicitante é um dos jogadores da partida
         const solicitanteEhJogadorDaPartida = await criarDesafioDto.jogadores.filter(jogador => jogador._id == criarDesafioDto.solicitante)
 
         this.logger.log(`solicitanteEhJogadorDaPartida: ${solicitanteEhJogadorDaPartida}`)
@@ -53,14 +46,10 @@ export class DesafiosService {
             throw new BadRequestException(`O solicitante deve ser um jogador da partida!`)
         }
 
-        /*
-        Descobrimos a categoria com base no ID do jogador solicitante
-        */
+        // Descobrimos a categoria com base no ID do jogador solicitante!
         const categoriaDoJogador = await this.categoriasService.consultarCategoriaDoJogador(criarDesafioDto.solicitante)
-
-        /*
-        Para prosseguir o solicitante deve fazer parte de uma categoria
-        */
+        
+        // Para prosseguir o solicitante deve fazer parte de uma categoria
         if (!categoriaDoJogador) {
             throw new BadRequestException(`O solicitante precisa estar registrado em uma categoria!`)
         }
@@ -68,9 +57,8 @@ export class DesafiosService {
         const desafioCriado = new this.desafioModel(criarDesafioDto)
         desafioCriado.categoria = categoriaDoJogador.categoria
         desafioCriado.dataHoraSolicitacao = new Date()
-        /*
-        Quando um desafio for criado, definimos o status desafio como pendente
-        */
+        
+        // Quando um desafio for criado, definimos o status desafio como pendente
         desafioCriado.status = DesafioStatus.PENDENTE
         this.logger.log(`desafioCriado: ${JSON.stringify(desafioCriado)}`)
         return await desafioCriado.save()

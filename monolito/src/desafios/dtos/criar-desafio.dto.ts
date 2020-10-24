@@ -9,6 +9,7 @@ export class CriarDesafioDto {
   @IsNotEmpty()
   solicitante: Jogador;
 
+  // partida deve ter 2 jogadores 
   @IsArray()
   @ArrayMinSize(2)
   @ArrayMaxSize(2)

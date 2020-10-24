@@ -62,7 +62,8 @@ export class CategoriasController {
             await this.categoriasService.atualizarCategoria(categoria, atualizarCategoriaDto)
 
         }    
-
+    
+        // atribuir jogador (id) com uma categoria 
    @Post('/:categoria/jogadores/:idJogador')
    async atribuirCategoriaJogador(
        @Param() params: string[]): Promise<void> {

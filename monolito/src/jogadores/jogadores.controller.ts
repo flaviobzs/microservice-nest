@@ -20,6 +20,7 @@ export class JogadoresController {
     // passar instancia do service no contrutor 
     constructor(private readonly jogadoresService: JogadoresService) {}
 
+    // criar jogador 
     @Post()
     // passado o tipo do pipe (validação)
     @UsePipes(ValidationPipe)
@@ -28,6 +29,7 @@ export class JogadoresController {
         return await this.jogadoresService.criarJogador(criarJogadorDto)
     }
 
+    // atualizar dados jogador 
     @Put('/:_id')
     @UsePipes(ValidationPipe)
     async atualizarJogador(
@@ -37,12 +39,8 @@ export class JogadoresController {
         @Param('_id', ValidacaoParametrosPipe) _id: string): Promise<void> {
         await this.jogadoresService.atualizarJogador(_id, atualizarJogadorDto)
     }
-
-    /*
-    Desafio
-    Passamos a utilizar query parameters com o verbo GET
-    */
-
+   
+    // tras o jogador indicado pelo id, ou retorna todos (MESMO METODO)
     @Get()
     async consultarJogadores(
         @Query('idJogador') _id: string): Promise<Jogador[] | Jogador> {
@@ -55,6 +53,7 @@ export class JogadoresController {
     }
 
     /*
+    !!!!!!!!!!!!!! metodo acima faz isso aqui tambem !!!!!!!!!!!!!
     @Get('/:_id')
     async consultarJogadorPeloId(
         @Param('_id', ValidacaoParametrosPipe) _id: string): Promise<Jogador> {
