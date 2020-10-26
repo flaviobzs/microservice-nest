@@ -17,5 +17,6 @@ export const DesafioSchema = new mongoose.Schema({
     },    
 }, {timestamps: true, collection: 'desafios' })
 
+// dados populados indicados nos metodos 
 
 

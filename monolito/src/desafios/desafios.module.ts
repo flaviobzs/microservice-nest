@@ -7,10 +7,6 @@ import { PartidaSchema } from './interfaces/partida.schema';
 import { JogadoresModule } from 'src/jogadores/jogadores.module';
 import { CategoriasModule } from 'src/categorias/categorias.module';
 
-/*
-Desafio
-*/
-
 @Module({
   imports: [
     MongooseModule.forFeature([

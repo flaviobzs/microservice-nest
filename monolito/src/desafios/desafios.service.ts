@@ -100,10 +100,8 @@ export class DesafiosService {
         if (!desafioEncontrado) {
             throw new NotFoundException(`Desafio ${_id} não cadastrado!`)
         }
-
-        /*
-        Atualizaremos a data da resposta quando o status do desafio vier preenchido 
-        */
+        
+        // Atualizaremos a data da resposta quando o status do desafio vier preenchido 
         if (atualizarDesafioDto.status){
            desafioEncontrado.dataHoraResposta = new Date()         
         }
@@ -121,10 +119,8 @@ export class DesafiosService {
         if (!desafioEncontrado) {
             throw new BadRequestException(`Desafio ${_id} não cadastrado!`)
         }
-
-         /*
-        Verificar se o jogador vencedor faz parte do desafio
-        */
+         
+        // Verificar se o jogador vencedor faz parte do desafio        
        const jogadorFilter = desafioEncontrado.jogadores.filter( jogador => jogador._id == atribuirDesafioPartidaDto.def )
 
         this.logger.log(`desafioEncontrado: ${desafioEncontrado}`)
@@ -133,42 +129,31 @@ export class DesafiosService {
        if (jogadorFilter.length == 0) {
            throw new BadRequestException(`O jogador vencedor não faz parte do desafio!`)
        }
-
-        /*
-        Primeiro vamos criar e persistir o objeto partida
-        */
+        
+        // Primeiro vamos criar e persistir o objeto partida    
        const partidaCriada = new this.partidaModel(atribuirDesafioPartidaDto)
-
-       /*
-       Atribuir ao objeto partida a categoria recuperada no desafio
-       */
+       
+    //    Atribuir ao objeto partida a categoria recuperada no desafio       
        partidaCriada.categoria = desafioEncontrado.categoria
-
-       /*
-       Atribuir ao objeto partida os jogadores que fizeram parte do desafio
-       */
+       
+    //    Atribuir ao objeto partida os jogadores que fizeram parte do desafio       
        partidaCriada.jogadores = desafioEncontrado.jogadores
 
-       const resultado = await partidaCriada.save()
-       
-        /*
-        Quando uma partida for registrada por um usuário, mudaremos o 
-        status do desafio para realizado
-        */
+       const resultado = await partidaCriada.save()       
+        
+        // Quando uma partida for registrada por um usuário, mudaremos o 
+        // status do desafio para realizado        
         desafioEncontrado.status = DesafioStatus.REALIZADO
-
-        /*  
-        Recuperamos o ID da partida e atribuimos ao desafio
-        */
+        
+        // Recuperamos o ID da partida e atribuimos ao desafio        
         desafioEncontrado.partida = resultado._id
 
         try {
         await this.desafioModel.findOneAndUpdate({_id},{$set: desafioEncontrado}).exec() 
         } catch (error) {
-            /*
-            Se a atualização do desafio falhar excluímos a partida 
-            gravada anteriormente
-            */
+            
+            // Se a atualização do desafio falhar excluímos a partida 
+            // gravada anteriormente            
            await this.partidaModel.deleteOne({_id: resultado._id}).exec();
            throw new InternalServerErrorException()
         }
@@ -180,12 +165,10 @@ export class DesafiosService {
 
         if (!desafioEncontrado) {
             throw new BadRequestException(`Desafio ${_id} não cadastrado!`)
-        }
+        }        
         
-        /*
-        Realizaremos a deleção lógica do desafio, modificando seu status para
-        CANCELADO
-        */
+        // Realizaremos a deleção lógica do desafio, modificando seu status para
+        // CANCELADO    
        desafioEncontrado.status = DesafioStatus.CANCELADO
 
        await this.desafioModel.findOneAndUpdate({_id},{$set: desafioEncontrado}).exec() 

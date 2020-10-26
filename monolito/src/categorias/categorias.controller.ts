@@ -4,23 +4,27 @@ import { Categoria } from './interfaces/categoria.interface';
 import { CategoriasService } from './categorias.service';
 import { AtualizarCategoriaDto } from './dtos/atualizar-categoria.dto';
 
+
+// criar categoria 
+// consultar categoria  (com parametro id [uma catedoria], sem parametros [todas])
+// editar categoria 
+// atribuir jogador a categoria 
+
 @Controller('api/v1/categorias')
 export class CategoriasController {
 
     constructor(private readonly categoriasService: CategoriasService){}
 
+    // criar categoria 
     @Post()
     @UsePipes(ValidationPipe)
     async criarCategoria(
         @Body() criarCategoriaDto: CriarCategoriaDto): Promise<Categoria> {
             return await this.categoriasService.criarCategoria(criarCategoriaDto)
     }
-
-    /*
-    Desafio
-    Passamos a utilizado query parameters com o verbo Get
-    */
-
+    
+    // Passamos a utilizado query parameters com o verbo Get
+    
     @Get()
     async consultarCategorias(
         @Query() params: string[]): Promise<Array<Categoria> | Categoria> {

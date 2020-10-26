@@ -5,6 +5,11 @@ import { JogadoresService } from './jogadores.service'
 import { Jogador } from './interfaces/jogador.interface'
 import { ValidacaoParametrosPipe } from '../common/pipes/validacao-parametros.pipe'
 
+// criar jogador 
+// editar jogador 
+// consultar jogador  (com parametro id [uma catedoria], sem parametros [todas])
+// deletar jogador 
+
 // anotação para controler e path da rota 
 @Controller('api/v1/jogadores')
 export class JogadoresController {

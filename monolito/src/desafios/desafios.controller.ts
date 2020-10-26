@@ -6,9 +6,11 @@ import { DesafioStatusValidacaoPipe } from './pipes/desafio-status-validation.pi
 import { AtribuirDesafioPartidaDto } from './dtos/atribuir-desafio-partida.dto';
 import { AtualizarDesafioDto } from './dtos/atualizar-desafio.dto';
 
-/*
-Desafio
-*/
+// criar desafio 
+// consultar desafio [um jogador]
+// atualizar desafio 
+// deletar desafio 
+// atribuir desafio a uma partida 
 
 @Controller('api/v1/desafios')
 export class DesafiosController {
