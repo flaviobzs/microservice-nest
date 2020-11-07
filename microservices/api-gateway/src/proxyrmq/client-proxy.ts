@@ -9,6 +9,8 @@ export class ClientProxySmartRanking {
     private configService: ConfigService
   ) {}
 
+  // criação da instancia do client proxy 
+  // passando os paramentros 
     getClientProxyAdminBackendInstance(): ClientProxy {        
 
             return ClientProxyFactory.create({
