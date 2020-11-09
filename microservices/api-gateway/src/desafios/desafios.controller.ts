@@ -18,10 +18,7 @@ export class DesafiosController {
 
     private readonly logger = new Logger(DesafiosController.name)
 
-    /*
-        Criamos um proxy específico para lidar com o microservice
-        desafios
-    */
+        // Criamos um proxy específico para lidar com o microservice desafios
     private clientDesafios = 
     this.clientProxySmartRanking.getClientProxyDesafiosInstance()
 
@@ -34,10 +31,8 @@ export class DesafiosController {
         @Body() criarDesafioDto: CriarDesafioDto) {
             this.logger.log(`criarDesafioDto: ${JSON.stringify(criarDesafioDto)}`)
           
-            /*
-                Validações relacionadas ao array de jogadores que participam
-                do desafio
-            */
+                // Validações relacionadas ao array de jogadores que participam do desafio
+        //    não passa um id como paramentro 
             const jogadores: Jogador[] = await this.clientAdminBackend.send('consultar-jogadores', '').toPromise()                  
 
             criarDesafioDto.jogadores.map(jogadorDto => {
@@ -45,17 +40,12 @@ export class DesafiosController {
     
                 this.logger.log(`jogadorFilter: ${JSON.stringify(jogadorFilter)}`)  
 
-                /*
-                    Verificamos se os jogadores do desafio estão cadastrados
-                */
+                    // Verificamos se os jogadores do desafio estão cadastrados
                 if (jogadorFilter.length == 0) {
                     throw new BadRequestException(`O id ${jogadorDto._id} não é um jogador!`)
                 }
                 
-                /*
-                    Verificar se os jogadores fazem parte da categoria informada no
-                    desafio 
-                */
+                    // Verificar se os jogadores fazem parte da categoria informada no desafio 
                 if (jogadorFilter[0].categoria != criarDesafioDto.categoria) {
 
                     throw new BadRequestException(`O jogador ${jogadorFilter[0]._id} não faz parte da categoria informada!`)

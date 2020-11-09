@@ -32,6 +32,7 @@ export class JogadoresController {
 
       this.logger.log(`criarJogadorDto: ${JSON.stringify(criarJogadorDto)}`)          
       
+      // verifica se a categoria existe 
       const categoria: Categoria = await this.clientAdminBackend.send('consultar-categorias', 
       criarJogadorDto.categoria).toPromise()
 

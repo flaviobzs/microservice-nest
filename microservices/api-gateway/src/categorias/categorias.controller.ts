@@ -21,11 +21,13 @@ export class CategoriasController {
   criarCategoria(
     @Body() criarCategoriaDto: CriarCategoriaDto){
 
+      // não é assincrono porque ele fica sempre observando os eventos 
       this.clientAdminBackend.emit('criar-categoria', criarCategoriaDto)
 
   }
 
   @Get()
+  // fica observando algum evendo 
   consultarCategorias(@Query('idCategoria') _id: string): Observable<any> {
 
     return this.clientAdminBackend.send('consultar-categorias', _id ? _id : '')

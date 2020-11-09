@@ -3,6 +3,7 @@ import { CategoriasService } from './categorias.service';
 import { Payload, EventPattern, MessagePattern, Ctx, RmqContext } from '@nestjs/microservices';
 import { Categoria } from './interfaces/categoria.interface';
 
+// caso aconteça um erro para criar categoria no banco 
 const ackErrors: string[] = ['E11000']
 
 @Controller()
@@ -11,16 +12,20 @@ export class CategoriasController {
 
   logger = new Logger(CategoriasController.name)
 
+  // REGISTRO NA FILA 
   @EventPattern('criar-categoria')
   async criarCategoria(
+    // RECUPERAR A INFORMAÇÃO QUE VEM DA MENSAGERIA 
     @Payload() categoria: Categoria, @Ctx() context: RmqContext) {
 
+        // contexto para uso do brokker 
         const channel = context.getChannelRef()
         const originalMsg = context.getMessage()
 
         try {
 
           await this.categoriasService.criarCategoria(categoria)
+          // confirmação de recebimento da mensagem 
           await channel.ack(originalMsg)
         } catch(error) {
           this.logger.error(`error: ${JSON.stringify(error.message)}`)
